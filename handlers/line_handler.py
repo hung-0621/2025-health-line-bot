@@ -73,9 +73,8 @@ def handle_message(event):
     if user_text == "*操作說明*":
         reply_text = _get_reply_message(title="*操作說明*")
     elif user_text == "*健康評估*":
-        form_base_url = config.FROM_BASE_URL
-        form_url_with_id = f"{form_base_url}?entry.1419820681={user_name}&entry.935941896={user_id}"
-        reply_text = _get_reply_message(title="*健康評估*") + form_url_with_id + "\n"
+        liff_url = f"https://liff.line.me/{config.LIFF_ID}"
+        reply_text = _get_reply_message(title="*健康評估*") + liff_url + "\n"
     else:
         ai_service = AIService()
         reply_text = ai_service.generate_response(user_text)

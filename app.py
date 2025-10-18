@@ -12,7 +12,7 @@ app.logger.setLevel(logging.INFO)
 # --- 前端頁面路由 ---
 @app.route("/form")
 def form_page():
-    liff_id_form = config.LIFF_ID_FORM
+    liff_id_form = config.LIFF_ID
     return render_template("html/form.html", liff_id=liff_id_form)
 
 
