@@ -28,7 +28,7 @@ class GymService:
             if not places_result or places_result.get('status') != 'OK' or 'results' not in places_result:
                 logging.warning(f"Google Maps API did not return valid results. Status: {places_result.get('status')}")
                 return None
-                
+            print(places_result[0])
             gyms = []
             for place in places_result.get("results", []):
                 gym = {

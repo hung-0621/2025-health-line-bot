@@ -9,7 +9,8 @@ import urllib.parse
 
 class LineTemplateHandler:
     def __init__(self) -> None:
-       self.GYM_IMAGE_PATH = "../assets/images/gym.jpg"
+       self.GYM_IMAGE_PATH = f"{config.IMAGE_BASE_URL}/assets/images/gym.jpg"
+       self.GOOGLE_MAPS_BASE_URL = "https://www.google.com/maps/search/?api=1&query="
     
     def render_gym_template(self, gyms: list) -> TemplateMessage:
         if not gyms:
@@ -20,7 +21,6 @@ class LineTemplateHandler:
                     actions=[URIAction(label='重新搜尋', uri='line://nv/location')]
                 )
             ]))
-
         columns = []
         for gym in gyms[:10]:
             # 處理文字長度，避免超過 LINE 的限制
@@ -30,7 +30,7 @@ class LineTemplateHandler:
             # 動態建立 Google Maps 搜尋 URL
             query = f"{gym['name']} {gym['vincinity']}"
             encoded_query = urllib.parse.quote(query)
-            google_map_url = f"https://www.google.com/maps/search/?api=1&query={encoded_query}"
+            google_map_url = f"{self.GOOGLE_MAPS_BASE_URL}{encoded_query}"
 
             column = CarouselColumn(
                 thumbnail_image_url=self.GYM_IMAGE_PATH,

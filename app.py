@@ -8,11 +8,6 @@ app = Flask(__name__)
 
 app.logger.setLevel(logging.INFO)
 
-# 靜態檔案路由
-@app.route("/static/<path:filename>")
-def static_files(path):
-    return send_from_directory('assets', path)
-
 # LINE Webhook 路由
 @app.route("/callback", methods=['POST'])
 def callback():

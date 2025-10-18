@@ -8,6 +8,8 @@ class Config:
     ACCESS_TOKEN = os.getenv("LINE_BOT_CHANNEL_ACCESS_TOKEN")
     CHANNEL_SECRET = os.getenv("LINE_BOT_CHANNEL_SECRET")
     GOOGLE_MAPS_API_KEY = os.getenv("GOOGLE_MAPS_API_KEY")
-    BASE_URL = os.getenv("BASE_URL")
+    GOOGLE_GEMENI_API_KEY = os.getenv("GOOGLE_GEMENI_API_KEY")
+    IMAGE_BASE_URL = os.getenv("IMAGE_BASE_URL")
+    FROM_BASE_URL = os.getenv("FROM_BASE_URL")
     
 config = Config()

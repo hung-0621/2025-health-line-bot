@@ -1,4 +1,5 @@
 import json, logging
+from linebot import LineBotApi
 from linebot.v3 import WebhookHandler
 from linebot.v3.exceptions import InvalidSignatureError
 from linebot.v3.webhooks import MessageEvent, TextMessageContent, LocationMessageContent
@@ -20,8 +21,9 @@ from utils.handle_line_template import LineTemplateHandler
 configuration = Configuration(access_token=config.ACCESS_TOKEN)
 handler = WebhookHandler(config.CHANNEL_SECRET)
 line_template_handler = LineTemplateHandler()
+line_bot_api = LineBotApi(config.ACCESS_TOKEN)
 
-INSTRUCTION_FILE_PATH = "assets/json/instruction.json" 
+REPLY_MESSAGE_FILE_PATH = "assets/json/reply_message.json"
 
 
 # 輔助函式：回覆訊息
@@ -34,26 +36,49 @@ def _reply_message(reply_token: str, messages: list):
 
 
 # 輔助函式：取得回復訊息
-def _get_reply_message(file_path: str) -> str:
+def _get_reply_message(title: str, file_path: str = REPLY_MESSAGE_FILE_PATH) -> str:
     try:
         with open(file_path, "r", encoding="utf-8") as f:
-            instruction_data = json.load(f)
-            reply_text = instruction_data["message"]
+            reply_data_list = json.load(f)
+            
+            # 3. 迭代列表，尋找相符的 title
+            for item in reply_data_list:
+                if item.get("title") == title:
+                    return item.get("message", "訊息內容不存在。") # 回傳對應的 message
+            
+            # 如果迴圈結束後都沒找到
+            logging.warning(f"Title '{title}' not found in {file_path}")
+            return "抱歉，找不到對應的說明文字。"
+
     except FileNotFoundError:
-        reply_text = "功能異常，請回報管理員。"
-    return reply_text
+        logging.error(f"Reply message file not found at: {file_path}")
+        return "功能異常：找不到回覆訊息檔案，請回報管理員。"
+    except json.JSONDecodeError:
+        logging.error(f"Error decoding JSON from file: {file_path}")
+        return "功能異常：回覆訊息檔案格式錯誤，請回報管理員。"
+    except Exception as e:
+        logging.error(f"An unexpected error occurred in _get_reply_message: {e}")
+        return "功能發生未知錯誤，請回報管理員。"
 
 
 # 處理文字訊息
 @handler.add(MessageEvent, message=TextMessageContent)
 def handle_message(event):
     user_text = event.message.text
-    reply_text = _get_reply_message(user_text)
-    # todo 訊息處理邏輯
-    if user_text == "操作說明":
-        reply_text = _get_reply_message(INSTRUCTION_FILE_PATH)
+    user_id = event.source.user_id
+    profile = line_bot_api.get_profile(user_id)
+    user_name = profile.display_name
+    
+    # 訊息處理邏輯
+    if user_text == "*操作說明*":
+        reply_text = _get_reply_message(title="*操作說明*")
+    elif user_text == "*健康評估*":
+        form_base_url = config.FROM_BASE_URL
+        form_url_with_id = f"{form_base_url}?entry.1419820681={user_name}&entry.935941896={user_id}"
+        reply_text = _get_reply_message(title="*健康評估*") + form_url_with_id + "\n"
     else:
-        reply_text = "not implemented yet"
+        ai_service = AIService()
+        reply_text = ai_service.generate_response(user_text)
 
     _reply_message(event.reply_token, [TextMessage(text=reply_text)])
 
@@ -63,7 +88,7 @@ def handle_message(event):
 def handle_location(event):
     latitude = event.message.latitude
     longitude = event.message.longitude
-    radius = 100  # 搜尋半徑，單位為公尺
+    radius = 500  # 搜尋半徑，單位為公尺
 
     gym_service = GymService()
     gyms = gym_service.find_nearby_gyms(latitude, longitude, radius)
