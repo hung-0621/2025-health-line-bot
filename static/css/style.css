@@ -1,0 +1,288 @@
+/* 匯入 Google Fonts - Noto Sans TC */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&display=swap');
+
+/* 全局樣式 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Noto Sans TC', 'Microsoft JhengHei', 'PingFang TC', sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    padding: 20px;
+    color: #333;
+}
+
+/* 容器 */
+.container {
+    max-width: 900px;
+    margin: 0 auto;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    padding: 40px;
+    backdrop-filter: blur(10px);
+}
+
+/* 標題 */
+.title {
+    text-align: center;
+    font-size: 2.5rem;
+    font-weight: 900;
+    margin-bottom: 30px;
+    color: #667eea;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+    letter-spacing: 2px;
+}
+
+.subtitle {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+    color: #764ba2;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+    letter-spacing: 1px;
+}
+
+/* 導覽列 */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+}
+
+.nav-btn {
+    flex: 1;
+    min-width: calc(25% - 10px);
+    border: none;
+    background: white;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 500;
+    padding: 12px 24px;
+    transition: all 0.3s ease;
+    color: #555;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.nav-btn:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    background: #f8f9fa;
+}
+
+.nav-btn.active {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    font-weight: 600;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+}
+
+/* 內容區域 */
+#content-area {
+    min-height: 400px;
+    padding: 20px;
+    animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+#content-area h3 {
+    color: #667eea;
+    font-size: 1.8rem;
+    margin-bottom: 25px;
+    padding-bottom: 10px;
+    border-bottom: 3px solid #667eea;
+}
+
+/* 表單群組 */
+.form-group {
+    margin-bottom: 30px;
+    padding: 20px;
+    background: #f8f9fa;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    border-left: 4px solid #667eea;
+    transition: all 0.3s ease;
+}
+
+.form-group label:first-child {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 15px;
+    color: #333;
+    font-size: 1.1rem;
+}
+
+/* 文字輸入框 */
+.text-input {
+    width: 100%;
+    padding: 12px 15px;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    background: white;
+}
+
+.text-input:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+/* 單選按鈕 */
+.radio-option {
+    display: inline-block;
+    margin-right: 15px;
+    margin-bottom: 10px;
+}
+
+.radio-option input[type="radio"] {
+    display: none;
+}
+
+.radio-option label {
+    display: inline-block;
+    padding: 10px 20px;
+    background: white;
+    border: 2px solid #e0e0e0;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 500;
+    color: #555;
+}
+
+.radio-option input[type="radio"]:checked + label {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border-color: #667eea;
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+    transform: scale(1.05);
+}
+
+.radio-option label:hover {
+    border-color: #667eea;
+    transform: translateY(-2px);
+}
+
+/* 操作區域 */
+.action-area {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    margin-top: 40px;
+    padding-top: 30px;
+    border-top: 2px solid #e0e0e0;
+    flex-wrap: wrap;
+}
+
+.action-area button {
+    padding: 14px 32px;
+    font-size: 16px;
+    font-weight: 600;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+#prev-btn {
+    background: linear-gradient(135deg, #84b1fa 0%, #8fd2f4 100%);
+    color: white;
+}
+
+#next-btn {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+#submit-btn {
+    background: linear-gradient(135deg, #af93fb 0%, #7f57f5 100%);
+    color: white;
+}
+
+.action-area button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+}
+
+.action-area button:active {
+    transform: translateY(-1px);
+}
+
+/* 狀態訊息 */
+#status-message {
+    width: 100%;
+    text-align: center;
+    margin-top: 15px;
+    padding: 10px;
+    border-radius: 8px;
+    font-weight: 500;
+    color: #667eea;
+}
+
+/* 響應式設計 */
+@media (max-width: 768px) {
+    .container {
+        padding: 20px;
+    }
+    
+    .title {
+        font-size: 2rem;
+    }
+    
+    .navbar {
+        gap: 8px;
+        padding: 10px;
+    }
+    
+    .nav-btn {
+        flex: 1 1 calc(50% - 8px);
+        min-width: calc(50% - 8px);
+        font-size: 14px;
+        padding: 10px 16px;
+    }
+    
+    .radio-option {
+        display: block;
+        margin-bottom: 10px;
+    }
+    
+    .radio-option label {
+        display: block;
+        text-align: center;
+    }
+    
+    .action-area {
+        flex-direction: column;
+    }
+    
+    .action-area button {
+        width: 100%;
+    }
+}
+
+/* 載入動畫 */
+#content-area p {
+    text-align: center;
+    color: #667eea;
+    font-size: 1.1rem;
+}

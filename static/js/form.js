@@ -32,7 +32,7 @@ document.addEventListener('DOMContentLoaded', function () {
             if (!response.ok) throw new Error('無法獲取問題');
             const categoryData = await response.json();
 
-            let questionsHtml = `<h3>${categoryData.category}</h3><form id="health-form">`;
+            let questionsHtml = `<h3 class="subtitle">${categoryData.category}</h3><form id="health-form">`;
             categoryData.question.forEach((q, index) => {
                 questionsHtml += `<div class="form-group"><label>${q.text}</label>`;
                 // 處理需要輸入的欄位 (options 為空陣列)
@@ -59,7 +59,8 @@ document.addEventListener('DOMContentLoaded', function () {
             updateActionButtons();
 
         } catch (error) {
-            contentArea.innerHTML = `<p>內容載入失敗: ${error.message}</p>`;
+            console.error("渲染內容失敗:", error);
+            contentArea.innerHTML = `<p style="color: #f5576c;">內容載入失敗: ${error.message}</p>`;
         }
     }
 
@@ -149,8 +150,21 @@ document.addEventListener('DOMContentLoaded', function () {
 
         const allAnswers = JSON.parse(sessionStorage.getItem('healthAnswers')) || {};
 
+        const allData = await loadAllQuestions();
+        let totalQuestions = 0;
+        allData.forEach(cat => {
+            totalQuestions += cat.question.length;
+        });
+
+        if (Object.keys(allAnswers).length < totalQuestions) {
+            statusMessage.innerText = '請確保所有問題都已回答';
+            statusMessage.style.color = '#f5576c';
+            return;
+        }
+
         console.log('Final submission data:', allAnswers);
         statusMessage.innerText = '正在提交...';
+        statusMessage.style.color = '#667eea';
 
         try {
             if (window.LIFF_ID) {
@@ -176,16 +190,21 @@ document.addEventListener('DOMContentLoaded', function () {
 
             const result = await response.json();
             statusMessage.innerText = result.message;
+            statusMessage.style.color = '#84fab0';
             sessionStorage.removeItem('healthAnswers');
 
-            // 提交成功後可以選擇關閉 LIFF 視窗或顯示成功訊息
-            alert('提交成功！');
-            if (window.LIFF_ID && liff) {
-                liff.closeWindow();
-            }
+           setTimeout(() => {
+                if (typeof liff !== 'undefined' && liff.isInClient()) {
+                    liff.closeWindow();
+                } else {
+                    alert('感謝您完成健康評估!');
+                }
+            }, 2000);
 
         } catch (error) {
+            console.error('提交錯誤:', error);
             statusMessage.innerText = `錯誤：${error.message}`;
+            statusMessage.style.color = '#f5576c';
         }
     });
 
