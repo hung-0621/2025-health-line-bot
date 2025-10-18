@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>健康評估</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        .navbar { display: flex; justify-content: space-around; background-color: #f0f0f0; padding: 10px; margin-bottom: 20px; }
+        .navbar button { border: none; background: none; cursor: pointer; font-size: 16px; padding: 5px 10px; }
+        .navbar button.active { font-weight: bold; border-bottom: 2px solid #007bff; }
+        /* 新增：讓按鈕預設隱藏 */
+        .action-area button { display: none; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 1. 固定的導覽列 -->
+        <nav class="navbar">
+            <!-- 將 JSON 中的 category 名稱對應到按鈕 id -->
+            <button id="nav-個人資料" class="nav-btn active">個人資料</button>
+            <button id="nav-飲食篇" class="nav-btn">飲食篇</button>
+            <button id="nav-生活篇" class="nav-btn">生活篇</button>
+            <button id="nav-心理篇" class="nav-btn">心理篇</button>
+        </nav>
+
+        <!-- 2. 內容將被動態插入到這裡 -->
+        <main id="content-area">
+            <!-- 初始內容會由 JS 載入 -->
+        </main>
+
+        <!-- 3. 新增：固定的操作按鈕區域 -->
+        <div class="action-area" style="margin-top: 20px; display: flex; justify-content: space-between;">
+            <button type="button" id="prev-btn">上一步</button>
+            <button type="button" id="next-btn">下一步</button>
+            <button type="button" id="submit-btn">完成並提交</button>
+            <p id="status-message"></p>
+        </div>
+    </div>
+
+    <script>
+        window.LIFF_ID = {{ liff_id | tojson }};
+    </script>
+    
+    <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+    <script src="{{ url_for('static', filename='js/form.js') }}"></script>
+</body>
+</html>
